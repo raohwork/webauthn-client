@@ -1,0 +1,32 @@
+{
+    "name": "webauthn-client",
+    "version": "0.0.1",
+    "description": "client library for WebAuthn",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/raohwork/webauthn-client.git"
+    },
+    "keywords": [
+        "webauth",
+        "typescript"
+    ],
+    "author": "Ronmi Ren <ronmi.ren@gmail.com>",
+    "license": "MPL-2.0",
+    "bugs": {
+        "url": "https://github.com/raohwork/webauthn-client/issues"
+    },
+    "homepage": "https://github.com/raohwork/webauthn-client#readme",
+    "devDependencies": {
+        "@types/base64-arraybuffer": "^0.1.0",
+        "@types/webappsec-credential-management": "^0.3.10",
+        "typescript": "^3.4.5"
+    },
+    "dependencies": {
+        "base64-arraybuffer": "^0.2.0"
+    }
+}
