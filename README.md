@@ -18,8 +18,6 @@ const cl = new Client({
     beginAuth: '/webauthn/login/request',
     // endpoint to submit assertion
     confirmAuth: '/webauthn/login/verify',
-    // endpoint to logout
-    logout: '/logout',
     // api server hostname. BE AWARE! webauthn ONLY work in secure site (https)
     // You should leave this empty in most case.
     host: 'https://example.com',
@@ -45,7 +43,7 @@ try {
 
 - register: Registers a new credential for the user. Submits custom data to `beginReg` endpoint, and returns data received from `confirmReg` endpoint.
 - login: Authenticates the user with previously registered credential. Submits custom data to `beginAuth` endpoint, and returns data received from `confirmAuth` endpoint.
-- logout: Logout the user. Not part of WebAuthn.
+- isSupported: See if current browser supports WebAuthn.
 
 # License
 

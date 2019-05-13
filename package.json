@@ -1,6 +1,6 @@
 {
     "name": "webauthn-client",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "client library for WebAuthn",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",

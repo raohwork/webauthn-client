@@ -6,7 +6,6 @@ export interface Endpoints {
     confirmReg?: string;
     beginAuth?: string;
     confirmAuth?: string;
-    logout?: string;
 }
 
 export interface Option {
@@ -15,7 +14,6 @@ export interface Option {
     confirmReg: string;
     beginAuth: string;
     confirmAuth: string;
-    logout: string;
 }
 
 const defaultEndpoints = {
@@ -24,7 +22,6 @@ const defaultEndpoints = {
     confirmReg: '/register/verify',
     beginAuth: '/login/challenge',
     confirmAuth: '/login/verify',
-    logout: '/logout',
 }
 
 async function post<T>(uri: string, body?: any): Promise<T> {
@@ -139,7 +136,7 @@ export class Client {
         return await post<T>(this.uri(this.opt.confirmAuth), prepareJson(cred));
     }
 
-    public async logout<T>(): Promise<T> {
-        return get<T>(this.uri(this.opt.logout));
+    public isSuported(): boolean {
+        return !!navigator && !!CC && !!CC.get && !!CC.create;
     }
 }
