@@ -7,7 +7,7 @@ It is not tested in any means yet.
 # Synopsis (typescript)
 
 ```ts
-import {Client} from 'ronmi/webauthn-client';
+import {Client} from 'webauthn-client';
 
 const cl = new Client({
     // endpoint to retrieve credential creation options for registration
