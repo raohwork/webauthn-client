@@ -18,11 +18,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const base64 = __importStar(require("base64-arraybuffer"));
 const defaultEndpoints = {
     host: '',
-    beginReg: '/egister/challenge',
+    beginReg: '/register/challenge',
     confirmReg: '/register/verify',
     beginAuth: '/login/challenge',
     confirmAuth: '/login/verify',
-    logout: '/logout',
 };
 function post(uri, body) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -34,18 +33,6 @@ function post(uri, body) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(body),
-        });
-        if (resp.status != 200) {
-            throw new Error('server returns ' + resp.status + ' for ' + uri);
-        }
-        return yield resp.json();
-    });
-}
-function get(uri) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const resp = yield fetch(uri, {
-            method: 'GET',
-            credentials: 'include',
         });
         if (resp.status != 200) {
             throw new Error('server returns ' + resp.status + ' for ' + uri);
@@ -95,7 +82,11 @@ function prepareJson(data) {
     }
     return data;
 }
-class Client {
+function isSuported() {
+    return !!navigator && !!CC && !!CC.get && !!CC.create;
+}
+exports.isSuported = isSuported;
+class Base {
     constructor(ep) {
         this.opt = Object.assign({}, defaultEndpoints, ep);
     }
@@ -105,6 +96,8 @@ class Client {
         }
         return ep;
     }
+}
+class Register extends Base {
     register(userData) {
         return __awaiter(this, void 0, void 0, function* () {
             const publicKey = yield beginReg(this.uri(this.opt.beginReg), userData);
@@ -115,6 +108,9 @@ class Client {
             return yield post(this.uri(this.opt.confirmReg), prepareJson(cred));
         });
     }
+}
+exports.Register = Register;
+class Auth extends Base {
     login(userData) {
         return __awaiter(this, void 0, void 0, function* () {
             const publicKey = yield beginLogin(this.uri(this.opt.beginAuth), userData);
@@ -125,9 +121,21 @@ class Client {
             return yield post(this.uri(this.opt.confirmAuth), prepareJson(cred));
         });
     }
-    logout() {
+}
+exports.Auth = Auth;
+class Client {
+    constructor(ep) {
+        this.auth = new Auth(ep);
+        this.reg = new Register(ep);
+    }
+    register(userData) {
         return __awaiter(this, void 0, void 0, function* () {
-            return get(this.uri(this.opt.logout));
+            return yield this.reg.register(userData);
+        });
+    }
+    login(userData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.auth.login(userData);
         });
     }
 }

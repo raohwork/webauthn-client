@@ -18,7 +18,7 @@ export interface Option {
 
 const defaultEndpoints = {
     host: '',
-    beginReg: '/egister/challenge',
+    beginReg: '/register/challenge',
     confirmReg: '/register/verify',
     beginAuth: '/login/challenge',
     confirmAuth: '/login/verify',
@@ -33,19 +33,6 @@ async function post<T>(uri: string, body?: any): Promise<T> {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(body),
-    });
-
-    if (resp.status != 200) {
-        throw new Error('server returns ' + resp.status + ' for ' + uri);
-    }
-
-    return await resp.json() as T;
-}
-
-async function get<T>(uri: string): Promise<T> {
-    const resp = await fetch(uri, {
-        method: 'GET',
-        credentials: 'include',
     });
 
     if (resp.status != 200) {
@@ -104,20 +91,27 @@ function prepareJson(data: any): any {
     return data;
 }
 
-export class Client {
-    private opt: Option;
+export function isSuported(): boolean {
+    return !!navigator && !!CC && !!CC.get && !!CC.create;
+}
+
+
+class Base {
+    protected opt: Option;
 
     public constructor(ep?: Endpoints) {
         this.opt = Object.assign({}, defaultEndpoints, ep);
     }
 
-    private uri(ep: string): string {
+    protected uri(ep: string): string {
         if (!!this.opt.host) {
             return this.opt.host+ep;
         }
         return ep;
     }
+}
 
+export class Register extends Base {
     public async register<T>(userData?: any): Promise<T> {
         const publicKey = await beginReg(this.uri(this.opt.beginReg), userData);
         const cred = await CC.create({ publicKey });
@@ -126,7 +120,9 @@ export class Client {
         }
         return await post<T>(this.uri(this.opt.confirmReg), prepareJson(cred));
     }
+}
 
+export class Auth extends Base {
     public async login<T>(userData?: any): Promise<T> {
         const publicKey = await beginLogin(this.uri(this.opt.beginAuth), userData);
         const cred = await CC.get({ publicKey });
@@ -135,8 +131,22 @@ export class Client {
         }
         return await post<T>(this.uri(this.opt.confirmAuth), prepareJson(cred));
     }
+}
 
-    public isSuported(): boolean {
-        return !!navigator && !!CC && !!CC.get && !!CC.create;
+export class Client {
+    private auth: Auth;
+    private reg: Register;
+
+    public constructor(ep?: Endpoints) {
+        this.auth = new Auth(ep);
+        this.reg = new Register(ep);
+    }
+
+    public async register<T>(userData?: any): Promise<T> {
+        return await this.reg.register<T>(userData);
+    }
+
+    public async login<T>(userData?: any): Promise<T> {
+        return await this.auth.login<T>(userData);
     }
 }

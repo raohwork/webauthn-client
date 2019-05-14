@@ -41,9 +41,17 @@ try {
 
 # APIs
 
-- register: Registers a new credential for the user. Submits custom data to `beginReg` endpoint, and returns data received from `confirmReg` endpoint.
-- login: Authenticates the user with previously registered credential. Submits custom data to `beginAuth` endpoint, and returns data received from `confirmAuth` endpoint.
-- isSupported: See if current browser supports WebAuthn.
+- `Register.register`: Registers a new credential for the user. Submits custom data to `beginReg` endpoint, and returns data received from `confirmReg` endpoint.
+- `Auth.login`: Authenticates the user with previously registered credential. Submits custom data to `beginAuth` endpoint, and returns data received from `confirmAuth` endpoint.
+- `isSupported`: See if current browser supports WebAuthn.
+- `Client`: Wraps both `Register` and `Auth` in an object.
+
+Endpoints have default values:
+
+- `beginReg`: /register/challenge
+- `confirmReg`: /register/verify
+- `beginAuth`: /login/challenge
+- `confirmAuth`: /login/verify
 
 # License
 

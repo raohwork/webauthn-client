@@ -4,7 +4,6 @@ export interface Endpoints {
     confirmReg?: string;
     beginAuth?: string;
     confirmAuth?: string;
-    logout?: string;
 }
 export interface Option {
     host: string;
@@ -12,13 +11,24 @@ export interface Option {
     confirmReg: string;
     beginAuth: string;
     confirmAuth: string;
-    logout: string;
+}
+export declare function isSuported(): boolean;
+declare class Base {
+    protected opt: Option;
+    constructor(ep?: Endpoints);
+    protected uri(ep: string): string;
+}
+export declare class Register extends Base {
+    register<T>(userData?: any): Promise<T>;
+}
+export declare class Auth extends Base {
+    login<T>(userData?: any): Promise<T>;
 }
 export declare class Client {
-    private opt;
+    private auth;
+    private reg;
     constructor(ep?: Endpoints);
-    private uri;
     register<T>(userData?: any): Promise<T>;
     login<T>(userData?: any): Promise<T>;
-    logout<T>(): Promise<T>;
 }
+export {};
