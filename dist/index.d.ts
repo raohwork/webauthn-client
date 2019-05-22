@@ -12,7 +12,7 @@ export interface Option {
     beginAuth: string;
     confirmAuth: string;
 }
-export declare function isSuported(): boolean;
+export declare function isSupported(): boolean;
 declare class Base {
     protected opt: Option;
     constructor(ep?: Endpoints);

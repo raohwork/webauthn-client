@@ -91,7 +91,7 @@ function prepareJson(data: any): any {
     return data;
 }
 
-export function isSuported(): boolean {
+export function isSupported(): boolean {
     return !!navigator && !!CC && !!CC.get && !!CC.create;
 }
 

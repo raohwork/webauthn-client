@@ -82,10 +82,10 @@ function prepareJson(data) {
     }
     return data;
 }
-function isSuported() {
+function isSupported() {
     return !!navigator && !!CC && !!CC.get && !!CC.create;
 }
-exports.isSuported = isSuported;
+exports.isSupported = isSupported;
 class Base {
     constructor(ep) {
         this.opt = Object.assign({}, defaultEndpoints, ep);
